@@ -1,0 +1,13 @@
+description = "cjh"
+
+dependencies {
+    compile(project(":spring-beans"))
+    compile(project(":spring-core"))
+    compile(project(":spring-tx"))
+    compile(project(":spring-context"))
+    compile(project(":spring-jdbc"))
+    testCompile(testFixtures(project(":spring-beans")))
+    testCompile(testFixtures(project(":spring-core")))
+    testFixturesImplementation(testFixtures(project(":spring-core")))
+    implementation 'mysql:mysql-connector-java:8.0.33'
+}
