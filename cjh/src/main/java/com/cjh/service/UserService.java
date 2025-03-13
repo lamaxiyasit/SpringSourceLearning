@@ -17,7 +17,8 @@ public class UserService {
 	private JdbcTemplate jdbcTemplate;
 
 	@Transactional
-	public void test(){
+	public void test() {
+		int i = 0;
 		jdbcTemplate.execute("insert into user_info(user_name,password,create_time,update_time,create_by,update_by) values('1','1',NOW(),NOW(),'1','1')");
 		throw new RuntimeException();
 	}
