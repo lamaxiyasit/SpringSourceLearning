@@ -147,7 +147,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * rollback-only but not throw an application exception.
 	 *
 	 * @throws NoTransactionException if the transaction info cannot be found,
-	 *                                because the method was invoked outside an AOP invocation context
+	 * because the method was invoked outside an AOP invocation context
 	 */
 	public static TransactionStatus currentTransactionStatus() throws NoTransactionException {
 		TransactionInfo info = currentTransactionInfo();
@@ -328,14 +328,15 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * {@link ReactiveTransactionManager} implementations for reactive return types.
 	 *
 	 * @param method      the Method being invoked
+	 * @param method the Method being invoked
 	 * @param targetClass the target class that we're invoking the method on
-	 * @param invocation  the callback to use for proceeding with the target invocation
+	 * @param invocation the callback to use for proceeding with the target invocation
 	 * @return the return value of the method, if any
 	 * @throws Throwable propagated from the target invocation
 	 */
 	@Nullable
 	protected Object invokeWithinTransaction(Method method, @Nullable Class<?> targetClass,
-											 final InvocationCallback invocation) throws Throwable {
+			final InvocationCallback invocation) throws Throwable {
 
 		// If the transaction attribute is null, the method is non-transactional.
 		TransactionAttributeSource tas = getTransactionAttributeSource();
@@ -347,7 +348,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				if (KotlinDetector.isKotlinType(method.getDeclaringClass()) && KotlinDelegate.isSuspend(method)) {
 					throw new TransactionUsageException(
 							"Unsupported annotated transaction on suspending function detected: " + method +
-									". Use TransactionalOperator.transactional extensions instead.");
+							". Use TransactionalOperator.transactional extensions instead.");
 				}
 				ReactiveAdapter adapter = this.reactiveAdapterRegistry.getAdapter(method.getReturnType());
 				if (adapter == null) {
@@ -504,7 +505,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	}
 
 	private String methodIdentification(Method method, @Nullable Class<?> targetClass,
-										@Nullable TransactionAttribute txAttr) {
+			@Nullable TransactionAttribute txAttr) {
 
 		String methodIdentification = methodIdentification(method, targetClass);
 		if (methodIdentification == null) {
@@ -543,7 +544,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 *
 	 * @param txAttr                  the TransactionAttribute (may be {@code null})
 	 * @param joinpointIdentification the fully qualified method name
-	 *                                (used for monitoring and logging purposes)
+	 * (used for monitoring and logging purposes)
 	 * @return a TransactionInfo object, whether or not a transaction was created.
 	 * The {@code hasTransaction()} method on TransactionInfo can be used to
 	 * tell if there was a transaction created.
@@ -551,7 +552,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 */
 	@SuppressWarnings("serial")
 	protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransactionManager tm,
-														   @Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
+			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
 
 		// If no name specified, apply method identification as transaction name.
 		if (txAttr != null && txAttr.getName() == null) {
@@ -653,7 +654,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 					logger.error("Application exception overridden by rollback exception", ex);
 					throw ex2;
 				}
-			} else {
 				// We don't roll back on this exception.
 				// Will still roll back if TransactionStatus.isRollbackOnly() is true.
 				try {
@@ -864,7 +864,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 														txInfo -> {
 															try {
 																return (Mono<?>) invocation.proceedWithInvocation();
-															} catch (Throwable ex) {
 																return Mono.error(ex);
 															}
 														},
@@ -873,7 +872,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 														this::commitTransactionAfterReturning)
 												.onErrorResume(ex ->
 														completeTransactionAfterThrowing(it, ex).then(Mono.error(ex)));
-									} catch (Throwable ex) {
 										// target invocation exception
 										return completeTransactionAfterThrowing(it, ex).then(Mono.error(ex));
 									}
@@ -892,7 +890,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 													txInfo -> {
 														try {
 															return this.adapter.toPublisher(invocation.proceedWithInvocation());
-														} catch (Throwable ex) {
 															return Mono.error(ex);
 														}
 													},
@@ -901,7 +898,6 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 													this::commitTransactionAfterReturning)
 											.onErrorResume(ex ->
 													completeTransactionAfterThrowing(it, ex).then(Mono.error(ex)));
-								} catch (Throwable ex) {
 									// target invocation exception
 									return completeTransactionAfterThrowing(it, ex).then(Mono.error(ex));
 								}
@@ -1013,7 +1009,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		private ReactiveTransaction reactiveTransaction;
 
 		public ReactiveTransactionInfo(@Nullable ReactiveTransactionManager transactionManager,
-									   @Nullable TransactionAttribute transactionAttribute, String joinpointIdentification) {
+				@Nullable TransactionAttribute transactionAttribute, String joinpointIdentification) {
 
 			this.transactionManager = transactionManager;
 			this.transactionAttribute = transactionAttribute;
