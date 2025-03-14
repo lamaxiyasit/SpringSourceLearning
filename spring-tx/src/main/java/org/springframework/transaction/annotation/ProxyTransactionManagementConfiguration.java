@@ -16,8 +16,6 @@
 
 package org.springframework.transaction.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,12 +56,8 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionAttributeSource transactionAttributeSource() {
-		TransactionAttributeSource transactionAttributeSource = new AnnotationTransactionAttributeSource();
-		System.out.println("AnnotationTransactionAttributeSource生成的内容" + transactionAttributeSource);
-		return transactionAttributeSource;
+		return new AnnotationTransactionAttributeSource();
 	}
-
-	protected static final Log logger = LogFactory.getLog(ProxyTransactionManagementConfiguration.class);
 
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
