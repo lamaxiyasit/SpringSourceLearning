@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'org.springframework'
+version '5.2.20.RELEASE'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter/'}
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    compile(project(":spring-context"))
+    compile(project(":spring-tx"))
+    compile(project(":spring-jdbc"))
+}
+
+test {
+    useJUnitPlatform()
+}
